@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AAMNA'S SKZ WRAPPED STATS</title>
+</head>
+<body>
+  <h1>🔥 AAMNA’S SKZ WRAPPED STATS 🔥</h1>
+  <div id="stats-container">
+    <p>Loading your music stats... 🔥</p>
+  </div>
+
+  <script>
+    async function fetchTopArtists(token) {
+      const response = await fetch('https://api.spotify.com/v1/me/top/artists?limit=5', {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      });
+      return response.json();
+    }
+
+    async function showStats() {
+      const token = localStorage.getItem('access_token');
+      if (!token) {
+        document.getElementById('stats-container').innerHTML = '<p>No access token found. Please log in again.</p>';
+        return;
+      }
+
+      const data = await fetchTopArtists(token);
+
+      if (data.error) {
+        document.getElementById('stats-container').innerHTML = `<p>Error: ${data.error.message}</p>`;
+        return;
+      }
+
+      let html = '<h2>Your Top 5 Artists 🔥</h2><ul>';
+      data.items.forEach(artist => {
+        html += `<li>${artist.name}</li>`;
+      });
+      html += '</ul>';
+
+      document.getElementById('stats-container').innerHTML = html;
+    }
+
+    showStats();
+  </script>
+</body>
+</html>
