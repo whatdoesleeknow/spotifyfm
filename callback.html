@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Callback - SKZ Wrapped</title>
+</head>
+<body>
+  <h1>Loading your SKZ data... 🔥</h1>
+
+  <script>
+    async function getAccessToken(code) {
+      const client_id = '9d575e2207b64abeabe3a15adf0bae3e';  // YOUR CLIENT ID
+      const client_secret = 'ef9647fe205d4eb589304d24baf6cecb';  // YOUR CLIENT SECRET
+      const redirect_uri = 'http://127.0.0.1:5500/callback.html';
+
+      const body = new URLSearchParams({
+        grant_type: 'authorization_code',
+        code: code,
+        redirect_uri: redirect_uri,
+      });
+
+      const response = await fetch('https://accounts.spotify.com/api/token', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Basic ' + btoa(client_id + ':' + client_secret),
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: body.toString(),
+      });
+
+      const data = await response.json();
+
+      if (data.access_token) {
+        localStorage.setItem('access_token', data.access_token);
+        window.location = 'stats.html';  // Next step: show your stats page
+      } else {
+        document.body.innerHTML = '<h2>Error getting access token :(</h2><p>' + JSON.stringify(data) + '</p>';
+      }
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+
+    if (code) {
+      getAccessToken(code);
+    } else {
+      document.body.innerHTML = '<h2>No code found in URL :(</h2>';
+    }
+  </script>
+</body>
+</html>
