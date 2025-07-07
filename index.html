@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Aamna's SKZ Wrapped</title>
+</head>
+<body>
+  <h1>🔥 AAMNA’S SKZ WRAPPED 🔥</h1>
+  <button id="login-btn">LOGIN WITH SPOTIFY</button>
+
+  <script>
+    const client_id = '9d575e2207b64abeabe3a15adf0bae3e'; // YOUR CLIENT ID INSIDE 🔥
+    const redirect_uri = 'http://localhost:5500/callback.html'; // MUST MATCH YOUR SPOTIFY DASHBOARD
+
+    const scopes = 'user-top-read user-read-recently-played';
+
+    document.getElementById('login-btn').addEventListener('click', () => {
+      const auth_url = 
+        'https://accounts.spotify.com/authorize' +
+        '?response_type=code' +
+        '&client_id=' + client_id +
+        '&scope=' + encodeURIComponent(scopes) +
+        '&redirect_uri=' + encodeURIComponent(redirect_uri);
+
+      window.location = auth_url;
+    });
+  </script>
+</body>
+</html>
